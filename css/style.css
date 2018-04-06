@@ -1,9 +1,9 @@
 p {
-    font-family: "Helvetica Neue", light;
+    font-family: "Helvetica Neue", thin;
 }
 
 h2 {
-	font-family: "Helvetica-Black";
+	font-family: "Helvetica", bold;
 	color: #f22330;
 }
 
