@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Stories and Maps</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+	<link href="css/style.css" rel="stylesheet"/>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+
+<style>
+#map {
+    position: fixed;
+    width:50%;
+}
+#features {
+    width: 50%;
+    margin-left: 50%;
+    overflow-y: scroll;
+    background-color: #fafafa;
+}
+section {
+    padding:  25px 50px;
+    line-height: 25px;
+    border-bottom: 1px solid #ddd;
+    opacity: 0.25;
+    font-size: 13px;
+}
+section.active {
+    opacity: 1;
+}
+section:last-child {
+    border-bottom: none;
+    margin-bottom: 330px;
+}
+</style>
+
+	<img src="images/Love-actually-movie-logo.png" alt="Love actually">
+	
+<div id='map'></div>
+<div id='features'>
+    <section id='baker' class='active'>
+        <h2>Grosvenor Chapel</h2>
+		<img class="scrollpic" src="images/wedding2.jpg" alt="Bryllup">
+        <p>Bryllupsklokkerne ringer. Det er Mark's bedste vens bryllupsdag. Han er best man og har planlagt flere overraskelser i løbet af dagen. Han har taget sin filmoptager med, så han kan optage alle minderne fra deres store dag. Der er bare et problem. Det er svært at holde øjnene og filmlinsen fra hans brud. Hun er smuk. Virkelig smuk. Men ingen må vide, hvad han føler. Hvad gør man, når man har forelsket sig i sin bedste vens kommende hustru?</p>
+    </section>
+    <section id='aldgate'>
+        <h2>Gabriels Wharf</h2>
+		<img class="scrollpic" src="images/wharf.png">
+        <p>Daniel er blevet enkemand efter at have mistet sin elskede kone. Tilbage er han og hendes søn Sam, som Daniel har taget til sig som sin egen. Sam har lukket sig selv inde efter morens død, og Daniel ved ikke, hvordan han kan nå ind til ham. En dag tager de en gåtur ved Gabriels Wharf, og sætter sig på en bænk. Daniel prøver at høre, hvordan han kan hjælpe Sam. Han får et overraskende svar. Sam har ikke kun været ked af det pga. morens død. Han er blevet ulykkelig forelsket i den smukkeste pige på skolen, som ikke engang ved, hvad han hedder. Daniel er fast besluttet på at hjælpe Sam med at komme i kontakt med Joanna, før hun tager tilbage til USA. </p>
+    </section>
+    <section id='london-bridge'>
+        <h2>Oxo Tower Wharf</h2>
+		<img class="scrollpic" src="images/mark.jpg" alt="Mark">
+        <p>Juliet besøger Mark for at høre om hun må se de optagelser han tog til deres bryllup. Mark lyver og siger, at de ikke duede, og han ikke har dem mere. Juliet er insisterende og går ind for at kigge på hans videobånd. Hun finder båndet med det samme og sætter det på. Der er kun optagelser af hende, og det går op for Juliet, hvilken hemmelighed Mark er gået rundt med. Hun har altid troet, at han ikke kunne lide hende. Med få ord, lyver Mark igen og siger, at han har et ærinde og smutter fra Juliet og sin lejlighed. Han slentrer ulykkelig, frustreret og pinlig berørt rundt i byen og stopepr ved Oxo Tower Wharf. Hvad gør han nu?
+		</p>
+    </section>
+    <section id='woolwich'>
+        <h2>27 St Luke’s Mews, Notting Hill</h2>
+		<img class="scrollpic" src="images/perfect.jpg" alt="boardcard">
+        <p>Det ringer på døren hos Juliet og Peter. Juliet rejser sig for at åbne, og udenfor døren står Mark med skilte i hånden og en CD-afspiller. Peter spørger, hvem det er, og hun bliver bedt om at sige, det er julekorsangere. Mark starter musikken og på kortene går han til kende og erklærer sin kærlighed til hende. Han har ikke tænkt sig at gøre noget ved det, da hun stadig er hans bedste vens kone. Hun har dog fortjent at vide sandheden. Da han er færdig, løber Juliet efter ham, og giver ham et kys. "Enough now" er hans sidste ord, da hun er gået tilbage til lejligheden, </p>
+		
+    </section>
+</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoic29maWVhbWFsaWUiLCJhIjoiY2pmaW1vbWhjNjc4ZjM0cGQ3eWR3MXgzdSJ9.NJ9xJlBsG59RnH2la8rC9A';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/sofieamalie/cjfjdg7wcfebo2rs5e2995jwh',
+    center: [-0.151400,51.509000],
+    zoom: 15.5,
+    bearing: 27,
+    pitch: 45
+});
+
+	// Add zoom and rotation controls to the map.
+	
+map.addControl(new mapboxgl.NavigationControl());
+	
+var chapters = {
+    'baker': {
+        bearing: 27,
+        center: [-0.151400, 51.509000],
+        zoom: 15.5,
+        pitch: 20
+    },
+    'aldgate': {
+        duration: 6000,
+        center: [-0.108053, 51.508200],
+        bearing: 150,
+        zoom: 15,
+        pitch: 0
+    },
+    'london-bridge': {
+        bearing: 90,
+        center: [-0.08533793, 51.50438536],
+        zoom: 14,
+        speed: 0.6,
+        pitch: 40
+    },
+    'woolwich': {
+        bearing: 90,
+        center: [-0.202039, 51.518094],
+        zoom: 14.3
+    }
+};
+
+// On every scroll event, check which element is on screen
+window.onscroll = function() {
+    var chapterNames = Object.keys(chapters);
+    for (var i = 0; i < chapterNames.length; i++) {
+        var chapterName = chapterNames[i];
+        if (isElementOnScreen(chapterName)) {
+            setActiveChapter(chapterName);
+            break;
+        }
+    }
+};
+
+var activeChapterName = 'baker';
+function setActiveChapter(chapterName) {
+    if (chapterName === activeChapterName) return;
+
+    map.flyTo(chapters[chapterName]);
+
+    document.getElementById(chapterName).setAttribute('class', 'active');
+    document.getElementById(activeChapterName).setAttribute('class', '');
+
+    activeChapterName = chapterName;
+}
+
+function isElementOnScreen(id) {
+    var element = document.getElementById(id);
+    var bounds = element.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+			var marker = new mapboxgl.Marker()
+				.setLngLat([-0.151400,51.509000])
+				.addTo(map);
+			map.addControl(new mapboxgl.FullscreenControl());
+	
+				var marker = new mapboxgl.Marker()
+				.setLngLat([-0.108053, 51.508200])
+				.addTo(map);
+	
+				var marker = new mapboxgl.Marker()
+				.setLngLat([-0.08533793, 51.50438536])
+				.addTo(map);
+		
+				var marker = new mapboxgl.Marker()
+				.setLngLat([-0.202039, 51.518094])
+				.addTo(map);
+			
+
+	</script>
+
+</body>
+</html>
